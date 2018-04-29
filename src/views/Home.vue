@@ -39,7 +39,7 @@
     </div>
 
 
-    <div v-if="true">
+    <div v-if="isSubmitting">
       <hr />
       <label class="label">Submitted Form:</label>
       <div class="box">
@@ -114,3 +114,11 @@ export default {
   }
 };
 </script>
+
+
+<style lang="scss" scoped>
+  .box {
+    box-shadow: 0 10px 35px rgba(0,0,0, .09);
+    margin-bottom: 45px;
+  }
+</style>
