@@ -1,7 +1,9 @@
 <template>
-  <div :class="['modal', modalOpen ? 'is-active' : '']">
+  <div
+    v-if="modalOpen"
+    :class="['modal', 'is-active']">
     <div class="modal-background"></div>
-    <div class="modal-card">
+    <div class="modal-card" v-click-outside="closeModal">
       <header class="modal-card-head">
         <p class="modal-card-title">{{ modalTitle }}</p>
         <button class="delete" v-if="showClose" @click="closeModal" aria-label="close"></button>
@@ -83,8 +85,13 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside';
+
 export default {
   name: "BaseModal",
+  directives: {
+    ClickOutside
+  },
   props: ["modalTitle", "showClose", "saveText", "showCancel", "cancelText", "modalOpen"],
   data: () => ({}),
   methods: {

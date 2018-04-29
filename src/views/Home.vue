@@ -63,14 +63,15 @@
 </template>
 
 <script>
-import Vue from 'vue';
-
-// @ is an alias to /src
+// BaseComponents
 import BaseForm from '@/components/BaseForm';
 import BaseInput from '@/components/BaseInput';
 import BaseSelect from '@/components/BaseSelect';
 import BaseCheckbox from '@/components/BaseCheckbox';
 import BaseModal from '@/components/BaseModal';
+
+// Directives
+import ClickOutside from 'vue-click-outside';
 
 export default {
   name: 'home',
@@ -80,6 +81,9 @@ export default {
     BaseSelect,
     BaseCheckbox,
     BaseModal
+  },
+  directives: {
+    ClickOutside
   },
   data() {
     return {
@@ -125,15 +129,13 @@ export default {
       }, 2000);
     },
     resetForm() {
-      Vue.nextTick(() => {
-        this.form = {
-          name: '',
-          email: '',
-          subject: '',
-          terms: false
-        };
-        this.isSubmitting = false;
-      });
+      this.form = {
+        name: '',
+        email: '',
+        subject: '',
+        terms: false
+      };
+      this.isSubmitting = false;
     },
     handleShowTerms() {
       this.showTermsAgreement = true;
