@@ -6,11 +6,13 @@
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
     "test": "vue-cli-service test",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "start": "node server.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "bulma": "^0.7.1",
+    "express": "^4.16.3",
     "vue": "^2.5.16",
     "vue-click-outside": "^1.0.7",
     "vue-router": "^3.0.1",
