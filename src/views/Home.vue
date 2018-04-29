@@ -34,7 +34,7 @@
         </base-checkbox>
 
         <button type="submit" :disabled="isDisabled" class="button is-link">{{ isSubmitting ? 'Submitting form...' : 'Submit Form'}}</button>
-        <button type="button" class="button is-text" @click.prevent="resetForm">Reset Form</button>
+        <button type="button" :disabled="isClean" class="button is-text" @click.prevent="resetForm">Reset Form</button>
       </base-form>
     </div>
 
@@ -90,6 +90,16 @@ export default {
   computed: {
     isDisabled() {
       return this.isSubmitting || !this.form.terms;
+    },
+    isClean() {
+      let isClean = true;
+      Object.keys(this.form).forEach((key) => {
+        let val = this.form[key];
+        if (val != '' || val != false) {
+          isClean = false;
+        }
+      })
+      return isClean;
     }
   },
   methods: {
