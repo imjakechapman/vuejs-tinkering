@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "test": "vue-cli-service test",
     "lint": "vue-cli-service lint",
-    "start": "node server.js"
+    "start": "yarn build && node server.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
