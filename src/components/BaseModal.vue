@@ -1,13 +1,13 @@
 <template>
-  <div class="modal">
+  <div :class="['modal', modalOpen ? 'is-active' : '']">
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">{{ modal-title }}</p>
-        <button class="delete" v-if="show-close" aria-label="close"></button>
+        <p class="modal-card-title">{{ modalTitle }}</p>
+        <button class="delete" v-if="showClose" @click="closeModal" aria-label="close"></button>
       </header>
       <section class="modal-card-body">
-        <div id="placeholders">
+        <div class="content">
           <h2 style="text-align: center;">TERMS AND CONDITIONS</h2>
           <ol>
             <li><strong>Introduction</strong></li>
@@ -75,8 +75,8 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success">Save changes</button>
-        <button class="button">Cancel</button>
+        <button class="button is-success" @click="handleSave">{{ saveText }}</button>
+        <button v-if="showCancel" class="button" @click="closeModal">{{ cancelText }}</button>
       </footer>
     </div>
   </div>
@@ -85,8 +85,16 @@
 <script>
 export default {
   name: "BaseModal",
-  props: ["modal-title", "modal-content"],
-  data: () => ({})
+  props: ["modalTitle", "showClose", "saveText", "showCancel", "cancelText", "modalOpen"],
+  data: () => ({}),
+  methods: {
+    handleSave() {
+      this.$emit('acceptTermsAgreement');
+    },
+    closeModal() {
+      this.$emit('closeModal');
+    }
+  }
 };
 </script>
 

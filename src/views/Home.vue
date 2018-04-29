@@ -30,7 +30,7 @@
           name="terms"
           :value="form.terms"
           v-model="form.terms">
-            I agree to the <a href="#">terms and conditions</a>
+            I agree to the <a href="#" @click="handleShowTerms">terms and conditions</a>
         </base-checkbox>
 
         <button type="submit" :disabled="isDisabled" class="button is-link">{{ isSubmitting ? 'Submitting form...' : 'Submit Form'}}</button>
@@ -48,6 +48,17 @@
         </div>
       </div>
     </div>
+
+    <base-modal
+      modalTitle="Terms and Conditions"
+      showClose="true"
+      saveText="Agree"
+      showCancel="true"
+      cancelText="Cancel"
+      :modalOpen="showTermsAgreement"
+      v-on:acceptTermsAgreement="acceptTermsAgreement"
+      v-on:closeModal="closeModal"
+      ></base-modal>
   </div>
 </template>
 
@@ -59,6 +70,7 @@ import BaseForm from '@/components/BaseForm';
 import BaseInput from '@/components/BaseInput';
 import BaseSelect from '@/components/BaseSelect';
 import BaseCheckbox from '@/components/BaseCheckbox';
+import BaseModal from '@/components/BaseModal';
 
 export default {
   name: 'home',
@@ -66,7 +78,8 @@ export default {
     BaseForm,
     BaseInput,
     BaseSelect,
-    BaseCheckbox
+    BaseCheckbox,
+    BaseModal
   },
   data() {
     return {
@@ -84,7 +97,8 @@ export default {
         name: [],
         email: []
       },
-      isSubmitting: false
+      isSubmitting: false,
+      showTermsAgreement: false
     }
   },
   computed: {
@@ -120,6 +134,16 @@ export default {
         };
         this.isSubmitting = false;
       });
+    },
+    handleShowTerms() {
+      this.showTermsAgreement = true;
+    },
+    closeModal() {
+      this.showTermsAgreement = false;
+    },
+    acceptTermsAgreement() {
+      this.form.terms = true;
+      this.closeModal();
     }
   }
 };
