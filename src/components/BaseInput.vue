@@ -6,8 +6,9 @@
       :name="name"
       :placeholder="placeholder"
       :class="[hasErrors ? classes.errorClass : '', 'input']"
-      v-model="val"/>
-    <p v-bind:class="[hasErrors ? classes.errorClass : '', 'help']">{{formattedErrors}}</p>
+      :value="value"
+      @input="$emit('input', $event.target.value)" />
+    <p :class="[hasErrors ? classes.errorClass : '', 'help']">{{formattedErrors}}</p>
   </div>
 </template>
 
@@ -16,9 +17,8 @@
 // Export Component
 export default {
   name: "BaseInput",
-  props: ['type', 'name', 'label', 'placeholder', 'errors'],
+  props: ['type', 'name', 'label', 'placeholder', 'errors', 'value'],
   data: () => ({
-    val: this.value,
     classes: {
       errorClass: 'is-danger',
       successClass: 'is-success'
@@ -30,11 +30,6 @@ export default {
     },
     formattedErrors() {
       return this.errors.map((error) => error.text).join(' - ');
-    }
-  },
-  watch: {
-    val(val) {
-      this.$emit('input', val);
     }
   }
 }

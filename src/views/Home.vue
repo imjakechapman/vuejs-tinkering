@@ -10,13 +10,21 @@
           :errors="errors.name"
           v-model="form.name"></base-input>
 
+        <base-input
+          name="email"
+          label="Email"
+          type="text"
+          placeholder="Email address"
+          :errors="errors.email"
+          v-model="form.email"></base-input>
+
         <base-select
           name="subject"
           label="Subject"
           placeholder="Select a subject"
           :options="options"
           :errors="errors.subject"
-          v-model="form.subject"></base-select>
+          v-model.sync="form.subject"></base-select>
 
         <base-checkbox
           name="terms"
@@ -64,6 +72,7 @@ export default {
     return {
       form: {
         name: '',
+        email: '',
         subject: '',
         terms: false
       },
@@ -72,7 +81,8 @@ export default {
         { 'id': 2, 'value': 'Vue.js'}
       ],
       errors: {
-        name: []
+        name: [],
+        email: []
       },
       isSubmitting: false
     }
@@ -91,12 +101,15 @@ export default {
       }, 2000);
     },
     resetForm() {
-      this.form = {
-        name: '',
-        subject: '',
-        terms: false
-      };
-      this.isSubmitting = false;
+      Vue.nextTick(() => {
+        this.form = {
+          name: '',
+          email: '',
+          subject: '',
+          terms: false
+        };
+        this.isSubmitting = false;
+      });
     }
   }
 };

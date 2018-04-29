@@ -5,7 +5,8 @@
         <input
           :name="name"
           type="checkbox"
-          v-model="accepted">
+          :checked="checked"
+          v-on:change="$emit('change', $event.target.checked)">
         <slot></slot>
       </label>
     </div>
@@ -15,16 +16,13 @@
 <script>
 export default {
   name: "BaseCheckbox",
-  props: ['name', 'value'],
-  data: function() {
-    return {
-      accepted: this.value
-    }
+  model: {
+    prop: 'checked',
+    event: 'change'
   },
-  watch: {
-    accepted(val) {
-      this.$emit('input', val);
-    }
+  props: ['name', 'checked'],
+  data: function() {
+    return {}
   }
 }
 </script>
