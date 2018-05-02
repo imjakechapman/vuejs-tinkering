@@ -1,29 +1,32 @@
 <template>
-  <div class="home" style="max-width: 45%; margin: 0 auto;">
-    <div class="box" style="margin-top: 45px;">
-      <base-form v-on:form-submit="validateSubmitForm">
+  <div class="section">
+    <div class="box container">
+      <base-form
+        @form-submit="validateSubmitForm"
+        v-model="form">
+
         <base-input
           name="name"
           label="Name"
           type="text"
           placeholder="My Name"
-          :errors="errors.name"
-          v-model="form.name"></base-input>
+          :validation="this.$v"
+          v-model.sync="form.name"></base-input>
 
         <base-input
           name="email"
           label="Email"
           type="text"
           placeholder="Email address"
-          :errors="errors.email"
-          v-model="form.email"></base-input>
+          :validation="this.$v"
+          v-model.sync="form.email"></base-input>
 
         <base-select
           name="subject"
           label="Subject"
           placeholder="Select a subject"
+          :validation="this.$v"
           :options="options"
-          :errors="errors.subject"
           v-model.sync="form.subject"></base-select>
 
         <base-checkbox
@@ -33,8 +36,8 @@
             I agree to the <a href="#" @click="handleShowTerms">terms and conditions</a>
         </base-checkbox>
 
-        <button type="submit" :disabled="isDisabled" class="button is-link">{{ isSubmitting ? 'Submitting form...' : 'Submit Form'}}</button>
-        <button type="button" :disabled="isClean" class="button is-text" @click.prevent="resetForm">Reset Form</button>
+        <button type="submit" :disabled="isDisabled || this.$v.form.$invalid" class="button is-link">{{ isSubmitting ? 'Submitting form...' : 'Submit Form'}}</button>
+        <button type="button" :disabled="!this.$v.form.$dirty" class="button is-text" @click.prevent="resetForm">Reset Form</button>
       </base-form>
     </div>
 
@@ -63,6 +66,8 @@
 </template>
 
 <script>
+import { email, required, minLength } from 'vuelidate/lib/validators'
+
 // BaseComponents
 import BaseForm from '@/components/BaseForm';
 import BaseInput from '@/components/BaseInput';
@@ -97,10 +102,6 @@ export default {
         { 'id': 1, 'value': 'React.js'},
         { 'id': 2, 'value': 'Vue.js'}
       ],
-      errors: {
-        name: [],
-        email: []
-      },
       isSubmitting: false,
       showTermsAgreement: false
     }
@@ -108,16 +109,6 @@ export default {
   computed: {
     isDisabled() {
       return this.isSubmitting || !this.form.terms;
-    },
-    isClean() {
-      let isClean = true;
-      Object.keys(this.form).forEach((key) => {
-        let val = this.form[key];
-        if (val != '' || val != false) {
-          isClean = false;
-        }
-      })
-      return isClean;
     }
   },
   methods: {
@@ -135,6 +126,7 @@ export default {
         subject: '',
         terms: false
       };
+      this.$v.form.$reset();
       this.isSubmitting = false;
     },
     handleShowTerms() {
@@ -146,6 +138,13 @@ export default {
     acceptTermsAgreement() {
       this.form.terms = true;
       this.closeModal();
+    }
+  },
+  validations: {
+    form: {
+      name: { required },
+      email: { required, email, minLength: minLength(4) },
+      subject: { required }
     }
   }
 };
